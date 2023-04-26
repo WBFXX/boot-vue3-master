@@ -1,0 +1,3 @@
+# Project exclude paths
+/springboot/target/
+/vue/node_modules/
