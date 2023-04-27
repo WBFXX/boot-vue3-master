@@ -16,6 +16,8 @@
   })
   const load = () => {
     request.get('/dynamic/' + id).then(res => {
+      console.log(res)
+
       state.dynamic = res.data
     })
 

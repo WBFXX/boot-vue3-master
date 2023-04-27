@@ -55,14 +55,14 @@ const clickRead = () => {
     <div style="display: flex; height: 60px; line-height: 60px; border-bottom: 1px solid #eee">
       <div style="width: 280px; display: flex; padding-left: 30px">
         <div style="width: 50px">
-          <img src="../assets/征婚交友.png" alt="" style="width: 40px; position: relative; top: 10px; right: 0">
+          <img src="../assets/交流.png" alt="" style="width: 40px; position: relative; top: 10px; right: 0">
         </div>
-        <div style="flex: 1; font-size: 20px; color: orangered; font-weight: bold">校园征婚交友平台</div>
+        <div style="flex: 1; font-size: 20px; color: orangered; font-weight: bold">考研交流互助平台</div>
       </div>
       <div style="flex: 1; display: flex">
         <el-menu :default-active="activePath" mode="horizontal" router style="border: none; height: 100%; width: 50%">
           <el-menu-item index="/front/home">首页</el-menu-item>
-          <el-menu-item index="/front/im">聊天室</el-menu-item>
+          <el-menu-item index="/front/im">考研聊天室</el-menu-item>
           <el-menu-item index="/front/goods">积分商城</el-menu-item>
           <el-menu-item index="/front/orders">积分订单</el-menu-item>
         </el-menu>

@@ -46,7 +46,7 @@ import router from "@/router";
 
 <template>
   <div style="height: 100vh; overflow: hidden; background-color: aliceblue">
-    <div style="width: 100%; background-color: rgba(65, 105, 225,.1);padding: 15px 30px; color: dodgerblue; font-size: 20px; position: absolute">校园征婚交友平台</div>
+    <div style="width: 100%; background-color: rgba(65, 105, 225,.1);padding: 15px 30px; color: dodgerblue; font-size: 20px; position: absolute">考研交流互助平台</div>
     <div style="display: flex; width: 50%; margin: 120px auto; background-color: white;
       box-shadow: 0 0 10px -2px rgba(65, 105, 225,.5); overflow: hidden; border-radius: 10px">
       <div style="padding:30px">

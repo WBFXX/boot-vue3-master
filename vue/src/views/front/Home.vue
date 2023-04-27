@@ -2,6 +2,9 @@
 import {reactive, ref} from "vue";
 import router from "@/router"
 import request from "@/utils/request";
+import Follow from "@/components/Follow.vue";
+
+
   const getUrl = (name) => {
     return new URL(`../../assets/${name}`, import.meta.url).href
   }
@@ -47,6 +50,8 @@ const refreshNews = () => {
     state.news = res.data
   })
 }
+
+
 </script>
 
 <template>
@@ -85,8 +90,11 @@ const refreshNews = () => {
                   <span style="margin-left: 10px; font-size: 12px; color: #888">{{ item.time }}</span>
                 </div>
               </div>
-              <div style="flex: 1;">
 
+              <div style="flex: 1;">
+                <div style="text-align: right;">
+                  <follow/>
+                </div>
               </div>
             </div>
 
@@ -120,8 +128,8 @@ const refreshNews = () => {
                   <span style="margin-left: 3px">{{ item.commentCount }}</span>
                 </span>
 
-                <span style="margin-left: 10px">
-                  <el-icon :size="20" style="top: 4px"><img style="width: 20px" src="@/assets/点赞.svg" alt=""></el-icon>
+                <span style="margin-left: 10px" >
+                  <el-icon  :size="20" style="top: 4px" ><img style="width: 20px" src="@/assets/点赞.svg" alt=""></el-icon>
                   <span style="margin-left: 3px">{{ item.praiseCount }}</span>
                 </span>
               </div>
@@ -146,7 +154,7 @@ const refreshNews = () => {
       <div style="width: 30%; margin-left: 10px">
         <el-card>
           <div style="padding-bottom: 10px; border-bottom: 1px solid #ccc; ">
-            <span style="font-size: 20px; font-weight: bold; color: orange">校园资讯</span>
+            <span style="font-size: 20px; font-weight: bold; color: orange">考研资讯</span>
             <span style="float: right; top: 5px; font-size: 14px; color: #888" class="refresh" @click="refreshNews"><el-icon style="top: 2px"><Refresh /></el-icon> 换一换</span>
           </div>
           <div v-for="(item, index) in state.news" :key="item.id" style="margin: 10px 0">
@@ -157,7 +165,7 @@ const refreshNews = () => {
     </div>
 
 
-    
+
   </div>
 </template>
 
