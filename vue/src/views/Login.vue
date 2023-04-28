@@ -107,11 +107,21 @@ const login = () => {
               </div>
             </div>
             <el-form-item>
-              <el-button type="primary" style="width: 100%" @click="login">登 录</el-button>
+              <el-button type="primary" style="width: 100%;" @click="login">平台首页登录</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="success" style="width: 100%" @click="login">后台管理登录</el-button>
             </el-form-item>
           </el-form>
-          <div style="text-align: right"><a style="text-decoration: none; color: dodgerblue"
-                                            href="/register">还没有账号？去注册</a></div>
+          <div style="text-align: right;width: 100%">
+            <el-button style="float: left;font-size: 15px;top: 3px" type="primary" link @click="handleResetPassword" >忘记密码?</el-button>
+            <a style="text-decoration: none; color: dodgerblue"
+                                            href="/register">还没有账号？去注册</a>
+
+          </div>
+
+
+
         </div>
       </div>
     </div>

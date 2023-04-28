@@ -87,6 +87,8 @@ const clickRead = () => {
               <el-dropdown-menu>
                 <el-dropdown-item><div @click="router.push('/front/dynamic')">我的动态</div></el-dropdown-item>
                 <el-dropdown-item><div @click="router.push('/front/collect')">我的收藏</div></el-dropdown-item>
+                <el-dropdown-item><div @click="router.push('/front/follow')">关注列表</div></el-dropdown-item>
+                <el-dropdown-item><div @click="router.push('/front/fans')">粉丝列表</div></el-dropdown-item>
                 <el-dropdown-item><div @click="router.push('/front/address')">我的收货地址</div></el-dropdown-item>
                 <el-dropdown-item><div @click="router.push('/front/person')">个人信息</div></el-dropdown-item>
                 <el-dropdown-item><div @click="router.push('/front/password')">修改密码</div></el-dropdown-item>

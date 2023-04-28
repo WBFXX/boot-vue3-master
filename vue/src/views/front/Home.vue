@@ -1,9 +1,9 @@
 <script setup>
-import {reactive, ref} from "vue";
+import {computed, nextTick, reactive, ref, render} from "vue";
 import router from "@/router"
 import request from "@/utils/request";
-import Follow from "@/components/Follow.vue";
-
+import Follow from "@/components/FollowMenu.vue";
+import {ElMessage} from "element-plus";
 
   const getUrl = (name) => {
     return new URL(`../../assets/${name}`, import.meta.url).href
@@ -44,6 +44,7 @@ const load = () => {
 }
 load()  // 调用 load方法拿到后台数据
 
+
 const refreshNews = () => {
     // 刷新新闻
   request.get('/news').then(res => {
@@ -51,6 +52,17 @@ const refreshNews = () => {
   })
 }
 
+
+
+// 编辑
+const handleEdit = (raw) => {
+  dialogFormVisible.value = true
+  nextTick(() => {
+    ruleFormRef.value.resetFields()
+    state.form = JSON.parse(JSON.stringify(raw))
+    valueHtml.value = raw.content  // 富文本
+  })
+}
 
 </script>
 
@@ -91,10 +103,23 @@ const refreshNews = () => {
                 </div>
               </div>
 
+
+
+
+
               <div style="flex: 1;">
-                <div style="text-align: right;">
-                  <follow/>
-                </div>
+<!--                <span class="icon" v-if="state.dynamic.liked" @click="followActive">-->
+<!--                  <button @click.stop="followActive" class="my_button" :class="{liked: item.liked}">-->
+<!--                    {{ content }}-->
+<!--                  </button>-->
+<!--                     <span style="margin-left: 5px; color: red">{{ state.dynamic.praiseCount }}</span>-->
+<!--                 </span>-->
+<!--                <span class="icon" v-else @click="praise">-->
+<!--                     <el-icon style="top: 5px; margin-left: 10px"><img src="../../assets/点赞.svg" alt="" style="width: 20px;"></el-icon>-->
+<!--                     <span style="margin-left: 5px; color: #888">{{ state.dynamic.praiseCount }}</span>-->
+<!--                </span>-->
+
+
               </div>
             </div>
 
@@ -175,5 +200,24 @@ const refreshNews = () => {
 }
 :deep(.el-card__body) {
   padding: 10px !important;
+}
+.my_button {
+  color: #f56c6c;
+  background: #fef0f0;
+  border: #fbc4c4 solid;
+  border-radius: 20px;
+  padding: 12px 23px;
+  text-align: center;
+  font-size: 16px;
+  -webkit-transform: scale(0.7);
+}
+
+.my_button:hover {
+  background: #ff9999;
+}
+
+.my_button.liked {
+  color: #fef0f0;
+  background: #f56c6c;
 }
 </style>

@@ -26,16 +26,16 @@ import java.util.stream.Collectors;
 /**
  * 代码生成器
  * v1.0
- * 作者：程序员青戈
+ * 作者：计科1901武泊帆
  */
 @Slf4j
 public class CodeGenerator {
 
-    private static final String TABLE = "orders";  // 表名
-    private static final String MODULE_NAME = "积分订单";  // 菜单名称
+    private static final String TABLE = "follower";  // 表名
+    private static final String MODULE_NAME = "关注列表";  // 菜单名称
 
     private static final String PACKAGE_NAME = "com.example.springboot";  // java代码的包名
-    private static final String AUTHOR = "ikun";   // 作者
+    private static final String AUTHOR = "计科1901武泊帆";   // 作者
 
     /*=========================  下面的不用改动  =========================*/
 

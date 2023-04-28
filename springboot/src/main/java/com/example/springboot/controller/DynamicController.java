@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletOutputStream;
 import java.net.URLEncoder;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.io.InputStream;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 * @since 2023-02-28
 */
 @RestController
+@Slf4j
 @RequestMapping("/dynamic")
 public class DynamicController {
 
@@ -50,6 +52,8 @@ public class DynamicController {
     ICollectService collectService;
     @Resource
     ICommentsService commentsService;
+    @Resource
+    IFollowerService followerService;
 
     @AutoLog("新增动态")
     @PostMapping
@@ -118,15 +122,18 @@ public class DynamicController {
         // 查到了点赞的数据
         List<Praise> list = praiseService.list();
         List<Collect> collectList = collectService.list();
+        List<Follower> followerList = followerService.list();
         User user = SessionUtils.getUser();
         if (user != null) {
             // 筛选了当前用户是否点赞了动态
             dynamic.setHasPraise(list.stream().anyMatch(praise -> praise.getUserId().equals(user.getId()) && praise.getFid().equals(dynamic.getId())));
             dynamic.setHasCollect(collectList.stream().anyMatch(collect -> collect.getUserId().equals(user.getId()) && collect.getDynamicId().equals(dynamic.getId())));
+            dynamic.setLiked(followerList.stream().anyMatch(like -> like.getUserId().equals(user.getId())&& like.getFollowerId().equals(dynamic.getId())));
         }
         // 获取点赞的数量
         dynamic.setPraiseCount((int) list.stream().filter(praise -> praise.getFid().equals(dynamic.getId())).count());
         dynamic.setCollectCount((int) collectList.stream().filter(collect -> collect.getDynamicId().equals(dynamic.getId())).count());
+        dynamic.setFansCount((int) followerList.stream().filter(like -> like.getFollowerId().equals(dynamic.getId())).count());
         return Result.success(dynamic);
     }
 
@@ -151,6 +158,8 @@ public class DynamicController {
         List<Praise> praiseList = praiseService.list();
         List<Collect> collectList = collectService.list();
         List<Comments> commentsList = commentsService.list();
+        List<Follower> fansAndFollowList = followerService.list();
+
         List<Dynamic> records = page.getRecords();
         List<User> userList = userService.list();
         for (Dynamic record : records) {
@@ -164,6 +173,10 @@ public class DynamicController {
             record.setCollectCount(collectCount);
             int commentsCount = (int) commentsList.stream().filter(comments -> comments.getDynamicId().equals(record.getId())).count(); // 点赞数
             record.setCommentCount(commentsCount);
+            int followCount = (int) fansAndFollowList.stream().filter(follow -> follow.getUserId().equals(record.getId())).count();//关注数量
+            record.setFollowCount(followCount);
+            int fansCount = (int) fansAndFollowList.stream().filter(fans -> fans.getFollowerId().equals(record.getId())).count();//粉丝数量
+            record.setFollowCount(fansCount);
         }
         return Result.success(page);
     }

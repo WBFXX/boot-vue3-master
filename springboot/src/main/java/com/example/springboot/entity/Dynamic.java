@@ -93,6 +93,8 @@ private static final long serialVersionUID = 1L;
     @TableField(exist = false)  // 数据库不存在这个字段
     private Boolean hasCollect;
     @TableField(exist = false)  // 数据库不存在这个字段
+    private Boolean liked;  // 是否关注
+    @TableField(exist = false)  // 数据库不存在这个字段
     private Integer hot;  // 热度
     @TableField(exist = false)  // 数据库不存在这个字段
     private Integer praiseCount;  // 点赞
@@ -100,6 +102,13 @@ private static final long serialVersionUID = 1L;
     private Integer collectCount;  // 收藏
     @TableField(exist = false)  // 数据库不存在这个字段
     private Integer commentCount;  // 评论
+    @TableField(exist = false)  // 数据库不存在这个字段
+    private Integer fansCount;  // 评论
+    @TableField(exist = false)  // 数据库不存在这个字段
+    private Integer followCount;  // 评论
+
+
+
 
     @TableField(typeHandler = FastjsonTypeHandler.class)
     private List<String> tags;

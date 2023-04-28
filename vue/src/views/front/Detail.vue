@@ -14,10 +14,9 @@
     comments: [],
     parent: {}
   })
+
   const load = () => {
     request.get('/dynamic/' + id).then(res => {
-      console.log(res)
-
       state.dynamic = res.data
     })
 
@@ -25,6 +24,18 @@
       state.comments = res.data
     })
   }
+  const followActive = () => {
+    request.post('/follower',{followerId: id}).then(res => {
+      if (res.code === '200'){
+        ElMessage.success('关注成功')
+        load()
+      }else {
+        ElMessage.error(res.msg)
+      }
+
+    })
+  }
+
   onMounted(() => {
     load()
   })
@@ -86,7 +97,9 @@
   <div>
 
     <el-card v-if="state.dynamic">   <!--  state.dynamic === null  -->
+
       <div style="padding-bottom: 15px ;border-bottom: 1px solid #ddd; margin-bottom: 20px">
+
         <span style="font-weight: bold; font-size: 24px">{{ state.dynamic.name }}</span>
         <el-icon style="top: 3px; margin-left: 10px"><Clock /></el-icon>
         <span style="margin-left: 5px">{{ state.dynamic.time }}</span>
@@ -96,6 +109,13 @@
 
         <el-icon style="top: 3px; margin-left: 10px"><User /></el-icon>
         <span style="margin-left: 5px; font-size: 14px" v-if="state.dynamic.user">{{ state.dynamic.user.name }}</span>
+
+        <span style="float: right">
+          <input type="checkbox" v-model="state.dynamic.liked" hidden>
+          <button @click.stop="followActive" class="my_button" :class="{liked: state.dynamic.liked}">
+            {{state.dynamic.liked ? "已关注作者" : "+关注作者"}}
+          </button>
+        </span>
       </div>
 
       <div class="editor-content-view" v-html="state.dynamic.content"></div>
@@ -106,7 +126,9 @@
         <el-input style="flex: 1" placeholder="请您文明发言" @click="handleComment"></el-input>
         <div style="width: 150px; text-align: right;">
           <span class="icon" v-if="state.dynamic.hasPraise" @click="praise">
-            <el-icon style="top: 5px; margin-left: 10px"><img src="../../assets/点赞-active.png" alt="" style="width: 20px;"></el-icon>
+            <el-icon style="top: 5px; margin-left: 10px">
+              <img src="../../assets/点赞-active.png" alt="" style="width: 20px;">
+            </el-icon>
             <span style="margin-left: 5px; color: red">{{ state.dynamic.praiseCount }}</span>
           </span>
           <span class="icon" v-else @click="praise">
@@ -206,5 +228,25 @@
 <style>
 .icon:hover {
   cursor: pointer;
+}
+.my_button {
+  color: #f56c6c;
+  background: #fef0f0;
+  border: #fbc4c4 solid;
+  border-radius: 20px;
+  padding: 12px 23px;
+  text-align: center;
+  font-size: 16px;
+  -webkit-transform: scale(0.7);
+  cursor: pointer;
+}
+
+.my_button:hover {
+  background: #ff9999;
+}
+
+.my_button.liked {
+  color: #fef0f0;
+  background: #f56c6c;
 }
 </style>
