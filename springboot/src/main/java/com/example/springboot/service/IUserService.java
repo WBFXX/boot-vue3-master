@@ -31,4 +31,6 @@ public interface IUserService extends IService<User> {
     List<Permission> getPermissions(String roleFlag);
 
     void passwordChange(UserRequest userRequest);
+
+    void spendEmail(String email, String type);
 }

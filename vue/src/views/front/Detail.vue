@@ -27,7 +27,7 @@
   const followActive = () => {
     request.post('/follower',{followerId: id}).then(res => {
       if (res.code === '200'){
-        ElMessage.success('关注成功')
+        ElMessage.success('操作成功')
         load()
       }else {
         ElMessage.error(res.msg)

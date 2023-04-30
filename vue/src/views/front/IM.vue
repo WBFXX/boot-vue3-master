@@ -67,10 +67,16 @@ client.onmessage = (msg) => {
 }
 </script>
 
-<template>
-  <div style="width: 80%; margin: 10px auto">
+<template >
 
-    <div ref="divRef" style="background-color: white; padding: 20px; border: 1px solid #ccc; border-radius: 10px; height: 400px; overflow-y: scroll;">
+  <div style="height: 600px; border-radius: 10px;">
+    <div style="margin-left: 170px;text-align: left;border-radius: 10px">研友交流圈</div>
+  <div style="width: 80%;height:80%;margin: 10px auto">
+
+    <div ref="divRef" style="background-color: aliceblue;margin: 0px 50px 10px 50px;
+    padding: 20px;
+    border: 1px solid #ccc; border-radius: 10px;
+    height: 400px; overflow-y: scroll;">
       <div v-for="item in messages" :key="item.id">
         <div style="display: flex; margin: 20px 0;" v-if="user.uid !== item.uid">
           <el-popover
@@ -91,7 +97,7 @@ client.onmessage = (msg) => {
         </div>
 
         <div style="display: flex; justify-content: flex-end; margin: 20px 0;" v-else>
-          <div style="line-height: 30px; background-color: lightyellow; padding: 0 10px; width:fit-content; border-radius: 10px;">{{ item.text }}</div>
+          <div style="line-height: 30px; background-color: #04BE02; padding: 0 10px; width:fit-content; border-radius: 10px;">{{ item.text }}</div>
           <el-popover
               placement="top-start"
               :width="100"
@@ -109,10 +115,19 @@ client.onmessage = (msg) => {
       </div>
     </div>
 
-    <div style="margin: 10px 0; width: 100%">
+    <div style=" margin-left: 50px;width: 88%;height: 80px">
       <V3Emoji default-select="recent" :recent="true" :options-name="optionsName" :keep="true"  :textArea="true" size="mid" v-model="text" />
       <div style="text-align: right"><el-button @click="send" type="primary">发送</el-button></div>
     </div>
+  </div>
 
   </div>
+<!--  <div>-->
+<!--    <div style="text-align: right">aa</div>-->
+<!--  </div>-->
+
+
 </template>
+<style>
+
+</style>

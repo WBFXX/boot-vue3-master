@@ -52,7 +52,7 @@ const clickRead = () => {
 <template>
   <div>
     <!--    头部-->
-    <div style="display: flex; height: 60px; line-height: 60px; border-bottom: 1px solid #eee">
+    <div style="display: flex; height: 60px; line-height: 60px; border-bottom: 1px solid #eee;">
       <div style="width: 280px; display: flex; padding-left: 30px">
         <div style="width: 50px">
           <img src="../assets/交流.png" alt="" style="width: 40px; position: relative; top: 10px; right: 0">
@@ -99,13 +99,14 @@ const clickRead = () => {
         </div>
       </div>
     </div>
-
-    <div style="width: 70%; margin: 10px auto;">
+<!--    背景在这里改-->
+<div >
+    <div style="width: 75%; margin: 10px auto;">
       <router-view v-slot="{ Component }">
         <component @getAvatar="getAvatarHandler" @getUnread="getUnRead" ref="childRef" :is="Component" />
       </router-view>
     </div>
-
+</div>
   </div>
 </template>
 

@@ -76,7 +76,7 @@ const handleEdit = (raw) => {
           </el-carousel-item>
         </el-carousel>
       </div>
-      <div style="width: 30%;  margin-left: 10px">
+      <div style="width: 30%;  margin-left: 25px">
         <el-card style="max-height: 400px;">
           <div style="padding-bottom: 10px; border-bottom: 1px solid #ccc; font-size: 20px; font-weight: bold; color: orangered">热门动态</div>
           <div v-for="(item, index) in state.hots" :key="item.id" style="margin: 10px 0; display: flex; cursor: pointer"  @click="router.push('/front/detail?id=' + item.id)">
@@ -176,8 +176,8 @@ const handleEdit = (raw) => {
         </el-card>
       </div>
 
-      <div style="width: 30%; margin-left: 10px">
-        <el-card>
+      <div  style="width: 30%; margin-left: 25px">
+        <el-card >
           <div style="padding-bottom: 10px; border-bottom: 1px solid #ccc; ">
             <span style="font-size: 20px; font-weight: bold; color: orange">考研资讯</span>
             <span style="float: right; top: 5px; font-size: 14px; color: #888" class="refresh" @click="refreshNews"><el-icon style="top: 2px"><Refresh /></el-icon> 换一换</span>
@@ -195,29 +195,13 @@ const handleEdit = (raw) => {
 </template>
 
 <style scoped>
+
+
 .refresh:hover {
   cursor: pointer;
 }
 :deep(.el-card__body) {
   padding: 10px !important;
 }
-.my_button {
-  color: #f56c6c;
-  background: #fef0f0;
-  border: #fbc4c4 solid;
-  border-radius: 20px;
-  padding: 12px 23px;
-  text-align: center;
-  font-size: 16px;
-  -webkit-transform: scale(0.7);
-}
 
-.my_button:hover {
-  background: #ff9999;
-}
-
-.my_button.liked {
-  color: #fef0f0;
-  background: #f56c6c;
-}
 </style>

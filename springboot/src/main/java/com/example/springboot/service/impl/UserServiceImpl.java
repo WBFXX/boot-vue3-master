@@ -2,6 +2,7 @@ package com.example.springboot.service.impl;
 
 import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springboot.common.Constants;
+import com.example.springboot.common.enums.EmailCodeEnum;
 import com.example.springboot.controller.domain.LoginDTO;
 import com.example.springboot.controller.domain.UserRequest;
 import com.example.springboot.entity.Permission;
@@ -21,15 +23,19 @@ import com.example.springboot.mapper.UserMapper;
 import com.example.springboot.service.IPermissionService;
 import com.example.springboot.service.IRoleService;
 import com.example.springboot.service.IUserService;
+import com.example.springboot.utils.EmailUtils;
+import com.example.springboot.utils.RedisUtils;
 import com.example.springboot.utils.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +43,7 @@ import java.util.stream.Collectors;
  * 服务实现类
  * </p>
  *
- * @author 程序员青戈
+ * @author 计科1901武泊帆
  * @since 2022-11-28
  */
 @Service
@@ -45,6 +51,9 @@ import java.util.stream.Collectors;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     private static final long TIME_IN_MS5 = 5 * 60 * 1000;  // 表示5分钟的毫秒数
+
+    @Autowired
+    EmailUtils emailUtils;
 
     @Resource
     RolePermissionMapper rolePermissionMapper;
@@ -117,6 +126,49 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         updateById(dbUser);   // 设置到数据库
     }
 
+    @Override
+    public void spendEmail(String email, String type) {
+        String emailPrefix = EmailCodeEnum.getValue(type);
+        if (StrUtil.isBlank(emailPrefix)) {
+            throw new ServiceException("不支持的邮箱验证类型");
+        }
+        //设置redis的key
+        String key = Constants.EMAIL_CODE + emailPrefix + email;
+        Long expireTime = RedisUtils.getExpireTime(key);
+
+        //4 分钟
+        if (expireTime != null && expireTime > 4 * 60) {
+            throw new ServiceException("发送邮箱验证过于频繁");
+        }
+
+        Integer code = Integer.valueOf(RandomUtil.randomNumbers(6));
+        log.info("本次发送的验证码是:{}", code);
+        String context = "<b>尊敬的用户：</b><br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您好，" +
+                "考研交流互助平台提醒您本次的验证码是：<b>{}</b>，" +
+                "有效期5分钟。<br><br><br><b>考研交流互助平台</b>";
+        String html = StrUtil.format(context, code);
+        //校验邮箱是否注册
+        User user = getOne(new QueryWrapper<User>().eq("email", email));
+        if (EmailCodeEnum.REGISTER.equals(EmailCodeEnum.getEnum(type))) {//无需权限验证即可发送邮箱验证
+            if (user != null) {
+                throw new ServiceException("邮箱已注册");
+            }
+        } else if (EmailCodeEnum.RESET_PASSWORD.equals(EmailCodeEnum.getEnum(type))) {
+            if (user == null) {
+                throw new ServiceException("未找到用户");
+            }
+        }
+        //忘记密码
+        ThreadUtil.execAsync(() -> {//多线程异步请求，不管成功还是失败都会继续执行。可以防止网络阻塞
+            emailUtils.sendHtml("【考研交流互助平台】验证提醒", html, email);
+        });
+        // CODE_MAP.put(email + code, System.currentTimeMillis());
+
+
+        //设置redis缓存
+        RedisUtils.setCacheObject(key, code, TIME_IN_MS5, TimeUnit.MILLISECONDS);
+    }
+
     // 获取角色对应的菜单树
     private List<Permission> getTreePermissions(List<Permission> all) {
         // 菜单树 1级 -> 2级
@@ -130,15 +182,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return parentList.stream().sorted(Comparator.comparing(Permission::getOrders)).collect(Collectors.toList());  // 排序
     }
 
-    @Override
-    public void register(UserRequest user) {
-        User saveUser = new User();
-        BeanUtils.copyProperties(user, saveUser);   // 把请求数据的属性copy给存储数据库的属性
-        saveUser.setRole("USER");
-        // 存储用户信息
-        saveUser(saveUser);
+    /**
+     * 校验邮箱
+     *
+     * @param emailCode
+     */
+    private void validateEmail(String emailKey, String emailCode) {
+        //校验邮箱
+//        String key = email + emailCode;
+        Integer code = RedisUtils.getCacheObject(emailKey);
+        if (code == null) {
+            throw new ServiceException("验证码失效");
+        }
+        if (!emailCode.equals(code.toString())) {
+            //说明验证码过期
+            throw new ServiceException("验证码过期，请重新发送！");
+        }
+//        Long timestamp = CODE_MAP.get(key);
+//        if (timestamp == null) {
+//            throw new ServiceException("请先验证邮箱");
+//        }
+//        //timestamp(发送验证码时间)+5分钟＞当前时间
+//        if (timestamp + TIME_IN_MS5 < System.currentTimeMillis()) {
+//            //说明验证码过期
+//            throw new ServiceException("验证码过期，请重新发送！");
+//        }
+//        CODE_MAP.remove(key);
+        //  清除缓存
+        RedisUtils.deleteObject(emailKey);
     }
-
 
     /**
      * 重置密码
@@ -153,11 +225,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (dbUser == null) {
             throw new ServiceException("未找到用户");
         }
+        //校验邮箱
+        String key = Constants.EMAIL_CODE + EmailCodeEnum.RESET_PASSWORD.getValue() + email;
+
+        validateEmail(key, userRequest.getEmailCode());
         String newPass = "123";
-        dbUser.setPassword(BCrypt.hashpw(newPass));
-        updateById(dbUser);   // 设置到数据库
+        //加密新密码
+//        dbUser.setPassword(SaSecureUtil.aesEncrypt(Constants.PASSWORD_KEY,newPass));
+        dbUser.setPassword(BCrypt.hashpw(newPass));//BCrypt加密
+
+//            dbUser.setPassword(newPass);
+        try {
+            updateById(dbUser);//设置到数据库
+        } catch (Exception e) {
+            throw new RuntimeException("操作失败", e);
+        }
         return newPass;
     }
+
+
+
+    @Override
+    public void register(UserRequest user) {
+        User saveUser = new User();
+        BeanUtils.copyProperties(user, saveUser);   // 把请求数据的属性copy给存储数据库的属性
+        saveUser.setRole("USER");
+        // 存储用户信息
+        saveUser(saveUser);
+    }
+
+
+
 
     @Override
     public void logout(String uid) {

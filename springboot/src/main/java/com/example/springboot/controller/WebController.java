@@ -74,6 +74,13 @@ public class WebController {
         return Result.success();
     }
 
+    @ApiOperation(value = "邮箱验证接口")
+    @GetMapping("/email")
+    public Result sendEmail(@RequestParam String email,@RequestParam String type) {// ？email=xxx&type=xxx
+        userService.spendEmail(email,type);
+        return Result.success();
+    }
+
     @AutoLog("用户重置密码")
     @ApiOperation(value = "密码重置接口")
     @PostMapping("/password/reset")

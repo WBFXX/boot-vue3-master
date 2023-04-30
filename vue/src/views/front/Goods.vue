@@ -97,7 +97,7 @@ const save = () => {
     <div>
       <el-row :gutter="10">
         <el-col :span="6" v-for="item in state.tableData" :key="item.id">
-          <el-card style="color: #666">
+          <el-card style="color: #666;">
             <div><img :src="item.img" alt="" style="width: 100%; height: 200px"></div>
             <div><span style="font-weight: bold">{{ item.name}}</span></div>
             <div style="margin: 5px 0; display: flex; font-size: 13px">

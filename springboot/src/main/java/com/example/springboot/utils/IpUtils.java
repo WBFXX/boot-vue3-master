@@ -35,7 +35,8 @@ public static Dict getIPAndCity() {
                 dict.set("city", city);
                 return dict;
             }
-            String url = "https://api.map.baidu.com/location/ip?ip=" + ip + "&ak=bmvg8yeOopwOB4aHl5uvx52rgIa3VrPO";
+//            百度api；ak
+            String url = "https://api.map.baidu.com/location/ip?ip=" + ip + "&ak=WWVF2LVcjdoVKGQnnflGOpBiOGgUGN7a";
             String res = HttpUtil.createRequest(Method.GET, url).execute().body();
             String json = UnicodeUtil.toString(res);
             JSON jsonObject = JSONUtil.parseObj(json);
