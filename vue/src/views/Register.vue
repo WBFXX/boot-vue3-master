@@ -114,16 +114,16 @@ console.log(store.user)
 </script>
 
 <template>
-  <div style="height: 100vh; overflow: hidden; background-color: aliceblue">
-    <div style="width: 100%; background-color: rgba(65, 105, 225,.1);
+  <div style="height: 100vh; overflow: hidden; background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);">
+    <div style="width: 100%; background-color: aliceblue;opacity: 0.8;
     padding: 15px 30px; color: dodgerblue; font-size: 20px; position: absolute">考研交流互助平台</div>
-    <div style="display: flex; width: 50%; margin: 80px auto ; background-color: white;
+    <div style="display: flex; width: 50%; margin: 80px auto ; background-color: aliceblue;opacity: 0.9;
       box-shadow: 0 0 10px -2px rgba(65, 105, 225,.5); overflow: hidden; border-radius: 10px">
       <div style="padding:30px">
         <img src="../assets/bg1.png" alt="" style="width: 100%; margin-top: 100px">
       </div>
       <div >
-        <div style="width: 400px; background-color: white; padding: 30px 40px;">
+        <div style="width: 400px; background-color: aliceblue; padding: 30px 40px;">
           <el-form
               ref="ruleFormRef"
               :model="loginData"

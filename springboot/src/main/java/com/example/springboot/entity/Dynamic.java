@@ -106,6 +106,8 @@ private static final long serialVersionUID = 1L;
     private Integer fansCount;  // 评论
     @TableField(exist = false)  // 数据库不存在这个字段
     private Integer followCount;  // 评论
+    @TableField(exist = false)  // 数据库不存在这个字段
+    private Integer dynamicCount;  // 动态数量
 
 
 

@@ -1,6 +1,8 @@
 package com.example.springboot.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import cn.hutool.core.util.StrUtil;
+import java.util.Comparator;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.springboot.common.annotation.AutoLog;
 import cn.hutool.poi.excel.ExcelUtil;
@@ -20,9 +22,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -61,7 +61,7 @@ public class FollowerController {
             try {
                 followerService.save(follower);
                 // 加积分
-                DynamicServiceImpl.createMessage(follower.getFollowerId(), "关注");
+                DynamicServiceImpl.createFellowMessage(follower.getUserId(), "关注");
             } catch (DuplicateKeyException e) {
                 // 唯一冲突就删除
                 followerService.remove(new UpdateWrapper<Follower>().eq("user_id", user.getId()).eq("follower_id", follower.getFollowerId()));
@@ -115,6 +115,49 @@ public class FollowerController {
         QueryWrapper<Follower> queryWrapper = new QueryWrapper<Follower>().orderByDesc("id");
         queryWrapper.like(!"".equals(name), "name", name);
         return Result.success(followerService.page(new Page<>(pageNum, pageSize), queryWrapper));
+    }
+
+    /**
+     * 关注最多的人
+     */
+    @GetMapping("/maxCount")
+    @SaIgnore// 不登录就可以查询
+    public Result maxCount(){
+        List<Follower> followerList = followerService.list();
+        List<Follower> maxCountLists = new ArrayList<>();
+        List<User> userList = userService.list();
+        for (Follower list : followerList) {
+            int follow =  followerService.countFollow(list.getFollowerId());
+            int fans = followerService.countFans(list.getFollowerId());
+            list.setFansCount(fans);
+            list.setFollowCount(follow);
+            // 查出所有被关注用户得信息
+            userList.stream().filter(user -> user.getId().equals(list.getFollowerId())).findFirst().ifPresent(list::setUser);
+
+        }
+        //使用一个HashMap来存储followerId和Follower对象的映射关系
+        Map<Integer, Follower> map = new HashMap<>();
+//遍历followerList
+        for (Follower follower : followerList) {
+            //获取当前元素的followerId
+            int followerId = follower.getFollowerId();
+            //如果map中已经存在该followerId，就跳过该元素
+            if (map.containsKey(followerId)) {
+                continue;
+            }
+            //否则，将该元素加入到map中
+            map.put(followerId, follower);
+        }
+//将map转换为list
+        followerList = new ArrayList<>(map.values());
+//使用Comparator接口对followerList按照fansCount降序排序
+        followerList.sort((o1, o2) -> o2.getFansCount() - o1.getFansCount());
+//使用subList方法获取前6个元素，如果followerList的大小小于6，就返回全部元素
+        maxCountLists = followerList.subList(0, Math.min(6, followerList.size()));
+//返回maxCountLists作为结果
+        return Result.success(maxCountLists);
+
+
     }
 
     /**

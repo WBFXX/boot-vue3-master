@@ -19,7 +19,8 @@
                 <div>粉丝量:{{scope.row.fansCount}} </div>
               </template>
               <template #reference>
-                <el-avatar :size="40" :src="scope.row.user.avatar" style="margin-top: 10px" />
+                <el-avatar @click="router.push('/front/info?id=' + scope.row.userId)"
+                           :size="40" :src="scope.row.user.avatar" style="margin-top: 10px;cursor: pointer" />
               </template>
             </el-popover>
           </template>

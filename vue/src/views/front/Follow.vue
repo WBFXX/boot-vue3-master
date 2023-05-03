@@ -39,9 +39,11 @@
                 <template #default>
                   <div>关注: {{scope.row.followCount}}</div>
                   <div>粉丝:{{scope.row.fansCount?scope.row.fansCount : 0}} </div>
+<!--                  <div>他的特别关注:{{scope.row.fansCount?scope.row.fansCount : 0}} </div>-->
                 </template>
                 <template #reference>
-                  <el-avatar :size="40" :src="scope.row.user.avatar" style="margin-top: 10px" />
+                  <el-avatar :size="40" :src="scope.row.user.avatar" style="margin-top: 10px;cursor: pointer"
+                             @click="router.push('/front/info?id=' + scope.row.followerId)" />
                 </template>
               </el-popover>
             </template>
@@ -60,7 +62,8 @@
             </el-table-column>
 
             <el-table-column label="操作">
-              <template #default="scope">
+
+              <template #default="scope" style="display: flex">
                 <el-popconfirm title="您确定取消关注吗？" @confirm="del(scope.row.id)" v-if="auths.includes('follower.delete')">
                   <template #reference>
                     <el-button type="danger">取消关注</el-button>
@@ -119,8 +122,9 @@ const load = () => {
       pageSize: pageSize.value
     }
   }).then(res => {
-    console.log(res)
+
     state.tableData = res.data.records
+    console.log(state.tableData)
     total.value = res.data.total
   })
 }

@@ -18,6 +18,8 @@ const rulePasswordFormRef = ref()
 const interval = ref(-1)
 const time = ref(0);
 
+
+
 const failCount = ref(0)
 const randomNum = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min)
@@ -173,87 +175,108 @@ const resetPassword = () => {
       }
   )
 }
+
+const rl = "../../../files/bg.jpg"
+const getUrl = (name) => {
+  return new URL(`../assets/${name}`,import.meta.url).href
+}
+const imgs = ref([
+    getUrl('bj.jpg')
+])
+
 </script>
 
-<template>
-  <div style="height: 100vh; overflow: hidden; background-color: aliceblue">
-    <div style="width: 100%; background-color: rgba(65, 105, 225,.1);padding: 15px 30px; color: dodgerblue; font-size: 20px; position: absolute">考研交流互助平台</div>
-    <div style="display: flex; width: 50%; margin: 150px auto; background-color: white;
-      box-shadow: 0 0 10px -2px rgba(30, 144, 255,.5); overflow: hidden; border-radius: 10px">
-      <div style="padding:30px">
-        <img src="../assets/bg2.png" alt="" style="width: 100%; margin-top: 50px">
+<template >
+  <div :style="{background: 'no-repeat url(' + imgs + ')'}" style="position: fixed;background-size:cover;">
+    <div style="height: 100vh;  overflow: hidden; " >
+      <!--  :style="{background:'no-repeat url(' + imgs + ')'}-->
+      <!--    background-color: aliceblue-->
+      <div style="width: 100%;background-color: aliceblue;opacity: 0.8;
+
+      position: absolute">
+        <div style="padding: 15px 30px; color: dodgerblue; font-size: 20px;">
+          考研交流互助平台
+        </div>
+
       </div>
-      <div>
-        <div style="width: 400px; background-color: white; padding: 30px 40px;">
-          <el-form
-              ref="ruleFormRef"
-              :model="loginData"
-              :rules="rules"
-              size="large"
-              status-icon
-          >
-            <div style="text-align: center; color: dodgerblue; font-size: 30px; font-weight: bold; margin-bottom: 30px">
-              登 录
-            </div>
-            <el-form-item prop="username">
-              <el-input v-model="loginData.username" placeholder="请输入账号" :prefix-icon="User"/>
-            </el-form-item>
-            <el-form-item prop="password">
-              <el-input v-model="loginData.password" show-password placeholder="请输入密码" :prefix-icon="Lock"/>
-            </el-form-item>
-            <div style="display: flex; margin: 15px 0" v-if="failCount >= 3">
-              <div style="flex: 1">
-                <el-input v-model="loginData.code" placeholder="验证码"></el-input>
+      <div style="opacity: 0.98;display: flex; width: 50%; margin: 150px auto; background-color: aliceblue;
+      box-shadow: 0 0 10px -2px rgba(30, 144, 255,.5); overflow: hidden; border-radius: 10px">
+        <div style="padding:30px">
+          <img src="../assets/bg2.png" alt="" style="width: 100%; margin-top: 50px">
+        </div>
+        <div>
+          <div style="width: 400px; background-color: aliceblue; padding: 30px 40px;">
+            <el-form
+                ref="ruleFormRef"
+                :model="loginData"
+                :rules="rules"
+                size="large"
+                status-icon
+            >
+              <div style="text-align: center; color: dodgerblue; font-size: 30px; font-weight: bold; margin-bottom: 30px">
+                登 录
               </div>
-              <div>
-                <div @click="refreshCode" style="margin-left: 5px">
-                  <SIdentify :identifyCode="identifyCode" />
+              <el-form-item prop="username">
+                <el-input v-model="loginData.username" placeholder="请输入账号" :prefix-icon="User"/>
+              </el-form-item>
+              <el-form-item prop="password">
+                <el-input v-model="loginData.password" show-password placeholder="请输入密码" :prefix-icon="Lock"/>
+              </el-form-item>
+              <div style="display: flex; margin: 15px 0" v-if="failCount >= 3">
+                <div style="flex: 1">
+                  <el-input v-model="loginData.code" placeholder="验证码"></el-input>
+                </div>
+                <div>
+                  <div @click="refreshCode" style="margin-left: 5px">
+                    <SIdentify :identifyCode="identifyCode" />
+                  </div>
                 </div>
               </div>
+              <el-form-item>
+                <el-button type="primary" style="width: 100%;" @click="loginFront">平台首页登录</el-button>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="success" style="width: 100%" @click="login">后台管理登录</el-button>
+              </el-form-item>
+            </el-form>
+            <div style="text-align: right;width: 100%">
+              <el-button style="float: left;font-size: 15px;top: 3px" type="primary" link @click="handleResetPassword" >
+                忘记密码?
+              </el-button>
+              <a style="text-decoration: none; color: dodgerblue"
+                 href="/register">还没有账号？去注册</a>
+
             </div>
-            <el-form-item>
-              <el-button type="primary" style="width: 100%;" @click="loginFront">平台首页登录</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="success" style="width: 100%" @click="login">后台管理登录</el-button>
-            </el-form-item>
-          </el-form>
-          <div style="text-align: right;width: 100%">
-            <el-button style="float: left;font-size: 15px;top: 3px" type="primary" link @click="handleResetPassword" >
-              忘记密码?
-            </el-button>
-            <a style="text-decoration: none; color: dodgerblue"
-                                            href="/register">还没有账号？去注册</a>
+
+
 
           </div>
-
-
-
-        </div>
-        <el-dialog v-model="passwordVis" title="忘记密码？" :close-on-click-modal="false" style="width: 500px ;padding: 0 20px">
-          <el-form :model="passwordForm" ref="rulePasswordFormRef" :rules="passwordRules" status-icon label-width="100px">
-            <el-form-item label="邮箱" prop="email" style="display: flex;width: 92%">
-              <el-input v-model="passwordForm.email" autocomplete="off"/>
-            </el-form-item>
-            <el-form-item label="验证码" prop="emailCode" >
-              <div style="display: flex;width: 90%">
-                <el-input style="flex: 1" v-model="passwordForm.emailCode" clearable></el-input>
-                <el-button style="width: 100px;margin-left:5px" @click="sendEmail" :disabled="time">点击发送<span
-                    v-if="time">({{ time }})</span></el-button>
-              </div>
-            </el-form-item>
-          </el-form>
-          <template #footer>
+          <el-dialog v-model="passwordVis" title="忘记密码？" :close-on-click-modal="false" style="width: 500px ;padding: 0 20px">
+            <el-form :model="passwordForm" ref="rulePasswordFormRef" :rules="passwordRules" status-icon label-width="100px">
+              <el-form-item label="邮箱" prop="email" style="display: flex;width: 92%">
+                <el-input v-model="passwordForm.email" autocomplete="off"/>
+              </el-form-item>
+              <el-form-item label="验证码" prop="emailCode" >
+                <div style="display: flex;width: 90%">
+                  <el-input style="flex: 1" v-model="passwordForm.emailCode" clearable></el-input>
+                  <el-button style="width: 100px;margin-left:5px" @click="sendEmail" :disabled="time">点击发送<span
+                      v-if="time">({{ time }})</span></el-button>
+                </div>
+              </el-form-item>
+            </el-form>
+            <template #footer>
       <span class="dialog-footer">
         <el-button @click="passwordVis = false">取消</el-button>
         <el-button type="primary" @click="resetPassword">
           确认
         </el-button>
       </span>
-          </template>
-        </el-dialog>
+            </template>
+          </el-dialog>
 
+        </div>
       </div>
+
     </div>
 
   </div>

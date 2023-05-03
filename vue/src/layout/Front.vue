@@ -47,6 +47,17 @@ getUnRead()
 const clickRead = () => {
   router.push('/front/messages?t=' + new Date().getTime())
 }
+
+const toChat = (id) => {
+  this.chatId = id
+  let _self = this;
+  this.$router.push(
+      {
+        name:'Chat', params: { userId: _self.chatId, }
+      }
+      )
+}
+
 </script>
 
 <template>
@@ -62,7 +73,7 @@ const clickRead = () => {
       <div style="flex: 1; display: flex">
         <el-menu :default-active="activePath" mode="horizontal" router style="border: none; height: 100%; width: 50%">
           <el-menu-item index="/front/home">首页</el-menu-item>
-          <el-menu-item index="/front/im">考研聊天室</el-menu-item>
+          <el-menu-item index="/front/chat">考研聊天室</el-menu-item>
           <el-menu-item index="/front/goods">积分商城</el-menu-item>
           <el-menu-item index="/front/orders">积分订单</el-menu-item>
         </el-menu>
@@ -85,14 +96,16 @@ const clickRead = () => {
             <el-avatar :size="40" :src="user.avatar" style="margin-top: 10px" />
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item><div @click="router.push('/front/dynamic')">我的动态</div></el-dropdown-item>
-                <el-dropdown-item><div @click="router.push('/front/collect')">我的收藏</div></el-dropdown-item>
-                <el-dropdown-item><div @click="router.push('/front/follow')">关注列表</div></el-dropdown-item>
-                <el-dropdown-item><div @click="router.push('/front/fans')">粉丝列表</div></el-dropdown-item>
-                <el-dropdown-item><div @click="router.push('/front/address')">我的收货地址</div></el-dropdown-item>
-                <el-dropdown-item><div @click="router.push('/front/person')">个人信息</div></el-dropdown-item>
-                <el-dropdown-item><div @click="router.push('/front/password')">修改密码</div></el-dropdown-item>
-                <el-dropdown-item><div @click="logout">退出登录</div></el-dropdown-item>
+                <el-dropdown-item @click="router.push('/front/dynamic')" ><div >我的动态</div></el-dropdown-item>
+                <el-dropdown-item @click="router.push('/front/collect')"><div>我的收藏</div></el-dropdown-item>
+                <el-dropdown-item @click="router.push('/front/follow')"><div>关注列表</div></el-dropdown-item>
+                <el-dropdown-item @click="router.push('/front/fans')"><div>粉丝列表</div></el-dropdown-item>
+                <el-dropdown-item @click="router.push('/front/address')"><div>我的收货地址</div></el-dropdown-item>
+                <el-dropdown-item @click="router.push('/front/person')"><div>个人信息</div></el-dropdown-item>
+                <el-dropdown-item @click="router.push('/front/password')"><div>修改密码</div></el-dropdown-item>
+<!--                <el-dropdown-item @click.native="toChat(2)"><div>私信</div></el-dropdown-item>-->
+
+                <el-dropdown-item @click="logout"><div>退出登录</div></el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -100,8 +113,8 @@ const clickRead = () => {
       </div>
     </div>
 <!--    背景在这里改-->
-<div >
-    <div style="width: 75%; margin: 10px auto;">
+<div>
+    <div style="width: 75%; margin: 10px auto ;">
       <router-view v-slot="{ Component }">
         <component @getAvatar="getAvatarHandler" @getUnread="getUnRead" ref="childRef" :is="Component" />
       </router-view>

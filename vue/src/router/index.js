@@ -53,6 +53,8 @@ const router = createRouter({
         { path: 'goods', name: 'FrontGoods', component: () => import('../views/front/Goods.vue') },
         { path: 'orders', name: 'FrontOrders', component: () => import('../views/front/Orders.vue') },
         { path: 'password', name: 'FrontPassword', component: () => import('../views/front/Password.vue') },
+        { path: 'chat', name: 'Chat', component: () => import('../views/front/Chat.vue') },
+        { path: 'info', name: 'Info', component: () => import('../views/front/Info.vue') },
       ]
     }
   ]
