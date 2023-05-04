@@ -26,7 +26,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="名称" width="400">
+        <el-table-column label="名称" width="300px">
           <template #default="scope">
             <el-popover effect="light" trigger="hover"  popover: disabled width="auto">
 
@@ -46,6 +46,11 @@
               </template>
             </el-popconfirm>
           </template>
+        </el-table-column>
+        <el-table-column #default="scope" label="私信">
+
+          <el-button type="primary" @click="router.push('/front/pm?fid=' + scope.row.userId)" >私信</el-button>
+
         </el-table-column>
       </el-table>
     </div>

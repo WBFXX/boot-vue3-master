@@ -3,13 +3,11 @@ package com.example.springboot.service.impl;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.springboot.entity.Dynamic;
-import com.example.springboot.entity.Follower;
-import com.example.springboot.entity.Messages;
-import com.example.springboot.entity.User;
+import com.example.springboot.entity.*;
 import com.example.springboot.mapper.DynamicMapper;
 import com.example.springboot.mapper.FollowerMapper;
 import com.example.springboot.mapper.MessagesMapper;
+import com.example.springboot.mapper.PmMapper;
 import com.example.springboot.service.IDynamicService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springboot.utils.SessionUtils;
@@ -67,16 +65,45 @@ public class DynamicServiceImpl extends ServiceImpl<DynamicMapper, Dynamic> impl
         messagesMapper.insert(messages);
     }
     public static void createFellowMessage(Integer userId, String opr) {
-        DynamicMapper dMapper = SpringContextUtil.getBean(DynamicMapper.class);
-        Dynamic dynamic = dMapper.selectById(userId);
         // 拼装content
         User user = SessionUtils.getUser();
-        String content = user.getName() + opr + "了你的动态" + "</a>";
+        String content = user.getName() + opr + "了你" + "</a>";
         MessagesMapper messagesMapper = SpringContextUtil.getBean(MessagesMapper.class);
         Messages messages = new Messages();
         messages.setContent(content);
-        messages.setUserId(user.getId());  // 动态的主人的id
+        messages.setUserId(userId);  // 动态的主人的id
         messages.setTime(DateUtil.now());
         messagesMapper.insert(messages);
     }
+
+    public static void createPmMessage(Integer userId, String opr) {
+        // 拼装content
+        User user = SessionUtils.getUser();
+        String content = user.getName() + opr + "了你" + "</a>";
+        MessagesMapper messagesMapper = SpringContextUtil.getBean(MessagesMapper.class);
+        Messages messages = new Messages();
+        messages.setContent(content);
+        messages.setUserId(userId);  // 被私信人的id
+        messages.setTime(DateUtil.now());
+        messagesMapper.insert(messages);
+    }
+
+
+//    public static void createPmMessage(Integer userId, String opr) {
+//        PmMapper pmMapper = SpringContextUtil.getBean(PmMapper.class);
+//
+//
+//        Pm pm = pmMapper.lambdaQuery().eq(Pm::getFromId, userId).one();
+//        // 拼装content
+//        User user = SessionUtils.getUser();
+//        String content = user.getName() + opr + "了你" + "</a>";
+//        MessagesMapper messagesMapper = SpringContextUtil.getBean(MessagesMapper.class);
+//        Messages messages = new Messages();
+//        messages.setContent(content);
+//        messages.setUserId(user.getId());  // 回复的主人的id
+//        messages.setTime(DateUtil.now());
+//        messagesMapper.insert(messages);
+//    }
+
+
 }

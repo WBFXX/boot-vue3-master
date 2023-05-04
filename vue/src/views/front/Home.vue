@@ -255,7 +255,7 @@ const followActive = (id) => {
             <div style="display: flex;cursor: pointer;
             border-bottom: 1px solid aliceblue"
                  class="overflowShow"
-                 @click="router.push('/front/info?id=' + item.followerId)"
+                 @click="router.push('/front/info?id=' + item.followerId )"
             >
               <span style="margin-left: 10px;">
                 <el-avatar :size="40" :src="item.user.avatar">

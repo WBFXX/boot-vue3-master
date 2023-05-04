@@ -49,7 +49,7 @@
             </template>
           </el-table-column>
 
-            <el-table-column label="名称" width="400">
+            <el-table-column label="名称" width="300">
               <template #default="scope">
                 <el-popover effect="light" trigger="hover"  popover: disabled  width="auto">
 
@@ -71,6 +71,12 @@
                 </el-popconfirm>
               </template>
             </el-table-column>
+
+          <el-table-column #default="scope" label="私信">
+
+                  <el-button type="primary" @click="router.push('/front/pm?fid=' + scope.row.followerId)" >私信</el-button>
+
+          </el-table-column>
           </el-table>
       </div>
     <div style="margin: 10px 0">
@@ -98,9 +104,10 @@
 <script setup >
 import {reactive, ref} from 'vue'
 import request from "@/utils/request";
-import {ElMessage} from "element-plus";
+import {ElButton, ElMessage} from "element-plus";
 import {useUserStore} from "@/stores/user";
 import router from "@/router";
+
 const userStore = useUserStore()
 const auths =  userStore.getAuths
 const name = ref('')

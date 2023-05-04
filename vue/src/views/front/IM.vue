@@ -28,7 +28,7 @@ onMounted(() => {
     scrollBottom()
   })
 })
-
+//user的uid
 const client = new WebSocket(`ws://localhost:9090/imserver/${user.uid}`)
 // 发送消息触发滚动条滚动
 const send = () => {
@@ -68,6 +68,7 @@ client.onmessage = (msg) => {
 </script>
 
 <template >
+<!--  被弃用-->
 
   <div style="height: 600px; border-radius: 10px;">
     <div style="margin-left: 170px;text-align: left;border-radius: 10px">研友交流圈</div>

@@ -115,6 +115,7 @@
           <button @click.stop="followActive" class="my_button" :class="{liked: state.dynamic.liked}">
             {{state.dynamic.liked ? "已关注作者" : "+关注作者"}}
           </button>
+          <el-button style="margin-bottom: 3px" @click="router.push('/front/pm?fid=' + state.dynamic.user.id)" >私信</el-button>
         </span>
       </div>
 

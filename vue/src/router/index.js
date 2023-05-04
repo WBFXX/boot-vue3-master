@@ -42,6 +42,7 @@ const router = createRouter({
         { path: 'detail', name: 'FrontDetail', component: () => import('../views/front/Detail.vue') },
         { path: 'dynamic', name: 'FrontDynamic', component: () => import('../views/front/Dynamic.vue') },
         { path: 'im', name: 'FrontIm', component: () => import('../views/front/IM.vue') },
+        { path: 'pm', name: 'FrontPm', component: () => import('../views/front/PM.vue') },
         { path: 'collect', name: 'FrontCollect', component: () => import('../views/front/Collect.vue') },
         { path: 'follow', name: 'FrontFollow', component: () => import('../views/front/Follow.vue') },
         { path: 'fans', name: 'Fans', component: () => import('../views/front/Fans.vue') },

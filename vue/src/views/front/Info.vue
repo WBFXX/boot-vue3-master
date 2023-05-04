@@ -33,15 +33,18 @@
         </div>
         <div style="position: absolute;right: 20px;top: 20px">
           <div style="padding-bottom: 15px ; margin-bottom: 20px">
-            <span style="float: right">
+            <span style="float: right;background-color: aliceblue">
               <input type="checkbox" v-model="state.fellow" hidden>
               <button @click.stop="followActive" class="my_button"
                       :class="{liked: state.fellow.liked === null ? state.fellow.liked : 'false'}">
                 {{state.fellow.liked ? "已关注" : "+ 关注"}}
               </button>
-            </span>
+              <el-button style="margin-bottom: 3px" @click="router.push('/front/pm?fid=' + iid)" >私信</el-button>
+            </span >
           </div>
         </div>
+
+
 
 
       </el-header>
@@ -192,6 +195,7 @@ const load = () => {
     // 在fellow里加个liked字段吧
     nextTick(() => {
       state.fellow = res.data
+      console.log(state.fellow)
 
     })
   })
