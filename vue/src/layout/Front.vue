@@ -73,7 +73,7 @@ const toChat = (id) => {
       <div style="flex: 1; display: flex">
         <el-menu :default-active="activePath" mode="horizontal" router style="border: none; height: 100%; width: 50%">
           <el-menu-item index="/front/home">首页</el-menu-item>
-          <el-menu-item index="/front/chat">考研聊天室</el-menu-item>
+          <el-menu-item index="/front/chat">考研交流室</el-menu-item>
           <el-menu-item index="/front/goods">积分商城</el-menu-item>
           <el-menu-item index="/front/orders">积分订单</el-menu-item>
         </el-menu>

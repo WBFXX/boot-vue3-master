@@ -4,7 +4,7 @@ import request from "@/utils/request";
 import {ElMessage} from "element-plus";
 import config from "../../config";
 import {useUserStore} from "@/stores/user";
-import { onBeforeUnmount, shallowRef} from "vue" 
+import { onBeforeUnmount, shallowRef} from "vue"
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 
@@ -54,10 +54,6 @@ onBeforeUnmount(() => {
   if (editor == null) return
   editor.destroy()
 })
-state.fromOptions = []
-request.get('/from').then(res => state.fromOptions = res.data)
-state.toOptions = []
-request.get('/to').then(res => state.toOptions = res.data)
 
 
 const multipleSelection = ref([])
@@ -185,6 +181,8 @@ const handleImgUploadSuccess = (res) => {
   state.form.img = res.data
   ElMessage.success('上传成功')
 }
+state.userOptions = []
+request.get('/user').then(res => state.userOptions = res.data)
 </script>
 
 <template>
@@ -245,8 +243,8 @@ const handleImgUploadSuccess = (res) => {
       <el-table :data="state.tableData" stripe border  @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
       <el-table-column prop="id" label="编号"></el-table-column>
-      <el-table-column label="发送者"><template #default="scope"><span v-if="scope.row.fromId">{{ state.fromOptions.find(v => v.id === scope.row.fromId) ? state.fromOptions.find(v => v.id === scope.row.fromId).name : '' }}</span></template></el-table-column>
-      <el-table-column label="接收者"><template #default="scope"><span v-if="scope.row.toId">{{ state.toOptions.find(v => v.id === scope.row.toId) ? state.toOptions.find(v => v.id === scope.row.toId).name : '' }}</span></template></el-table-column>
+      <el-table-column label="发送者"><template #default="scope"><span v-if="scope.row.fromId">{{ state.userOptions.find(v => v.id === scope.row.fromId) ? state.userOptions.find(v => v.id === scope.row.fromId).name : '' }}</span></template></el-table-column>
+      <el-table-column label="接收者"><template #default="scope"><span v-if="scope.row.toId">{{ state.userOptions.find(v => v.id === scope.row.toId) ? state.userOptions.find(v => v.id === scope.row.toId).name : '' }}</span></template></el-table-column>
       <el-table-column label="预览"><template #default="scope"><el-button @click="view(scope.row.content)">查看</el-button></template></el-table-column>
 
         <el-table-column label="操作" width="180">

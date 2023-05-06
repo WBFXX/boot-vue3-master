@@ -49,7 +49,7 @@
       <el-container>
         <el-header style="border-radius: 10px 10px 0 0">
           <div style="top: 20px;color: white;font-size: 16px ;outline-width: 10px">
-            考研聊天室
+            考研交流室
           </div>
 
         </el-header>
