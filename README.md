@@ -1,4 +1,4 @@
-# 考研交流平台
+# 考研交流互助平台
 
 ## 技术栈
 - 后端：SpringBoot + Mybatis-Plus + Sa-token + Redis

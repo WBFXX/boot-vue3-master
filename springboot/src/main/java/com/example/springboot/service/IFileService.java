@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *  服务类
  * </p>
  *
- * @author 程序员青戈
+ * @author 武泊帆
  * @since 2023-02-04
  */
 public interface IFileService extends IService<File> {

@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 前端控制器
  * </p>
  *
- * @author 程序员青戈
+ * @author 武泊帆
  * @since 2023-02-04
  */
 @RestController
@@ -73,7 +73,7 @@ public class FileController {
         String fileFullName = uniFileFlag + StrUtil.DOT + extName;
         // 封装完整的文件路径获取方法
         String fileUploadPath = getFileUploadPath(fileFullName);
-        //  完整的上传文件名： D:\知识星球\partner-back/files/1231321321321321982321.jpg
+        //  完整的上传文件名： D:\毕业设计\partner-back/files/1231321321321321982321.jpg
         long size = file.getSize();  // 单位是 byte, size / 1024 -> kb
 //        byte[] bytes = file.getBytes();
         String name = file.getName();

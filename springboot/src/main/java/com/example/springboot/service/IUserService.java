@@ -13,7 +13,7 @@ import java.util.List;
  * 服务类
  * </p>
  *
- * @author 程序员青戈
+ * @author 武泊帆
  * @since 2022-11-28
  */
 public interface IUserService extends IService<User> {

@@ -10,7 +10,7 @@ import java.util.List;
  *  服务类
  * </p>
  *
- * @author 程序员青戈
+ * @author 武泊帆
  * @since 2023-01-16
  */
 public interface IRoleService extends IService<Role> {

@@ -35,7 +35,7 @@ public class CodeGenerator {
     private static final String MODULE_NAME = "私信管理";  // 菜单名称
 
     private static final String PACKAGE_NAME = "com.example.springboot";  // java代码的包名
-    private static final String AUTHOR = "程序员青戈";   // 作者
+    private static final String AUTHOR = "武泊帆";   // 作者
 
     /*=========================  下面的不用改动  =========================*/
 

@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  *  Mapper 接口
  * </p>
  *
- * @author 程序员青戈
+ * @author 武泊帆
  * @since 2023-02-02
  */
 public interface DictMapper extends BaseMapper<Dict> {
